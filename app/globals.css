@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Arvo&family=Merriweather&family=Oswald&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Merriweather", serif;
+    color: #333333;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply font-ff3 text-col3 border-2 p-3 rounded;
+  }
+}
+
+
+.lines::after{
+  content: '';
+  width: 50%;
+  height: 2px;
+  background-color: #DB3A34;
+  position: absolute;
+  right:-55%;
+  top: 55%;
+}
+.lines::before{
+  content: '';
+  width: 30%;
+  height: 2px;
+  background-color: #DB3A34;
+  position: absolute;
+  left:-31%;
+  top: 55%;
+}
+
+@media (max-width: 768px){
+  .lines::after{
+    width: 30%;
+    right: -30%;
+  }
+}
