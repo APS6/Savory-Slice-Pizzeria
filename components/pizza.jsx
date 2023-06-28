@@ -135,7 +135,7 @@ const Pizza = (props) => {
         }
       })}
       {selected && (
-        <div className="bg-[#fdd7a9] rounded py-4 px-[1.5rem]  md:w-[80%] md:h-80 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col md:flex-row items-center justify-evenly">
+        <div className="bg-[#fdd7a9] rounded py-4 px-[1.5rem]  md:w-[80%] md:max-w-[740px] md:h-80 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col md:flex-row items-center justify-evenly">
           <Image
             src={urlForImage(selPizza.image)}
             alt={selPizza.slug.current}

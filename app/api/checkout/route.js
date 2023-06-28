@@ -1,4 +1,5 @@
-import Stripe from "stripe";
+import Stripe from 'stripe';
+import { NextResponse } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -17,7 +18,7 @@ export default async function handler(req, res) {
               product_data: { 
                 name: item.name,
               },
-              unit_amount: item.price * 100,
+              unit_amount: item.tprice * 100,
             },
             adjustable_quantity: {
               enabled:true,

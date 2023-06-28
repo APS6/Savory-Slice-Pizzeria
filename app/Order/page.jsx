@@ -43,7 +43,7 @@ export default async function Order() {
   return (
     <div className="grid place-items-center">
       <section className="h-[55vh] mt-8 md:mt-0 md:h-screen md:max-h-[600px] flex items-center w-full relative justify-center md:justify-between">
-    <div className="grid gap-6 md:pl-8 text-center">
+    <div className="grid gap-6 md:pl-8 text-center md:text-left">
     <h1 className="text-col2 text-7xl md:text-8xl font-ff1 leading-[1.2] over">Order. Eat. <br /> Enjoy. </h1>
     <p className="my-7 text-lg md:text-2xl">Pizza Delivered at Your Doorstep!</p>
     </div>

@@ -3,32 +3,47 @@ import React, { useEffect, useState,} from "react";
 import addData from "@/firebase/firestore/addData";
 import { useAuthContext } from "@/context/authContext";
 import { useStateContext } from "@/context/stateContext";
-import toast from 'react-hot-toast';
 import getStripe from "@/lib/getStripe";
-
+import toast from 'react-hot-toast';
 
 const Delivery = () => {
   const { user } = useAuthContext();
   const { info, fetchData, cartItems } = useStateContext();
+  const [isloading, setisloading] = useState(false);
+  const isdisabled = isloading || cartItems.length === 0;
 
   const handleCheckout = async () => {
+    setisloading(true);
     const stripe = await getStripe();
 
-    const response = await fetch('/api/stripe', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(cartItems),
-    });
-
-    if(response.statusCode === 500) return;
-    
-    const data = await response.json();
-
-    toast.loading('Redirecting...');
-
-    stripe.redirectToCheckout({ sessionId: data.id });
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cartItems),
+      });
+  
+      if(response.status === 500) return;
+      
+      if (!response.ok) {
+        // If the response status is not in the 200-299 range, throw an error
+        throw new Error('Checkout request failed');
+      }
+  
+      const data = await response.json();
+  
+      toast.loading('Redirecting...');
+  
+      stripe.redirectToCheckout({ sessionId: data.id });
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      // Handle the error appropriately, such as showing an error message to the user
+      toast.error('An error occurred during checkout. Please try again.');
+    } finally {
+      setisloading(false);
+    }
   }
 
 
@@ -87,9 +102,10 @@ const Delivery = () => {
             <button
               type="button"
               onClick={handleCheckout}
+              disabled={isdisabled}
               className="px-8 py-2 text-lg bg-[#ff8d30] rounded-md text-[white] cursor-pointer"
             >
-              Pay now
+            {isloading ? 'Redirecting' : 'Pay now'}
             </button>
           </div>
         </div>
@@ -109,7 +125,7 @@ const Delivery = () => {
                 type="text"
                 name="name"
                 placeholder="Enter your Name"
-                className="rounded p-2 border-2 border-[grey] focus:border-col3 focus:ring-0 w-80"
+                className="rounded p-2 border-2 border-[grey] focus:border-col3 focus:ring-0 max-w-xs lg:w-80 lg:max-w-none"
               />
             </div>
             <div>
@@ -122,7 +138,7 @@ const Delivery = () => {
                 type="text"
                 name="phone"
                 placeholder="Enter your Mobile no"
-                className="rounded p-2 border-2 border-[grey] focus:border-col3 focus:ring-0 w-80"
+                className="rounded p-2 border-2 border-[grey] focus:border-col3 focus:ring-0 max-w-xs lg:w-80 lg:max-w-none"
               />
             </div>
             <div>
@@ -135,7 +151,7 @@ const Delivery = () => {
                 type="text"
                 name="address"
                 placeholder="Enter your Adress"
-                className="rounded p-2 border-2 border-[grey] focus:border-col3 focus:ring-0 w-80"
+                className="rounded p-2 border-2 border-[grey] focus:border-col3 focus:ring-0 max-w-xs lg:w-80 lg:max-w-none"
               />
             </div>
             <div>
@@ -147,7 +163,7 @@ const Delivery = () => {
                 type="email"
                 name="email"
                 placeholder="Enter yourEmail"
-                className="rounded p-2 border-2 border-[grey] focus:border-col3 focus:ring-0 w-80"
+                className="rounded p-2 border-2 border-[grey] focus:border-col3 focus:ring-0 max-w-xs lg:w-80 lg:max-w-none"
               />
             </div>
             <div className="md:col-span-2">
@@ -163,8 +179,8 @@ const Delivery = () => {
               />
             </div>
           </div>
-          <button type="submit" className="btn text-xl px-8">
-            Pay now
+          <button type="submit" disabled={isdisabled} className="btn text-xl px-8">
+            {isloading ? 'Redirecting' : 'Pay now'}
           </button>
         </form>
       </div>
