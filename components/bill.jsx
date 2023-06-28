@@ -14,7 +14,7 @@ const Bill = () => {
   }
 
   return (
-    <div className="grid justify-items-center gap-8">
+    <div className="grid justify-items-center gap-8 rounded">
     <div className="bg-[#ffddb3] py-4 px-8">
       <h3 className="text-xl pb-6">Total Cost</h3>
       <div className="text-lg">

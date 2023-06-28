@@ -38,12 +38,12 @@ const CartItems = () => {
         {cartItems.map((pizza) => (
           <div
             key={pizza._id + pizza.size + pizza.cheese}
-            className="mb-8 bg-[#ffddb3] flex items-center p-2 gap-2"
+            className="mb-8 bg-[#ffddb3] flex items-center p-2 gap-2 rounded"
           >
             <Image
               src={urlForImage(pizza.image)}
               alt={pizza.slug.current}
-              className=" w-1/2 h-full md:h-auto max-h-[145px]"
+              className=" w-1/2 h-full md:h-auto max-h-[145px] rounded"
             />
             <div className="w-1/2">
               <h3 className="text-xl pb-4">{pizza.name}</h3>

@@ -70,7 +70,7 @@ const Pizza = (props) => {
                 <Image
                   src={urlForImage(pizza.image)}
                   alt={pizza.slug.current}
-                  className="w-full h-[50%]"
+                  className="w-full h-[50%] rounded"
                 />
               ) : (
                 <div>Failed to load image</div>
@@ -139,7 +139,7 @@ const Pizza = (props) => {
           <Image
             src={urlForImage(selPizza.image)}
             alt={selPizza.slug.current}
-            className=" w-[90%] md:w-1/2 md:h-[80%] max-w-[370px] object-cover"
+            className=" w-[90%] md:w-1/2 md:h-[80%] max-w-[370px] object-cover rounded"
           />
           <div className="flex flex-col gap-8 mt-2 md:mt-0">
             <div>
