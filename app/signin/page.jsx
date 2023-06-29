@@ -30,7 +30,14 @@ const Signup = () => {
 
   return (
     <div className="h-screen grid place-items-center">
-      <button onClick={() => signInWithGoogle()}>Sign in with google</button>
+      <div className="h-44 w-72 bg-[#fdd6a5] flex flex-col items-center p-6">
+        <h2 className="text-2xl text-col2 font-ff1">Login to continue</h2>
+        <div className="w-full bg-col2 mt-1 h-[2px]"></div>
+        <div className="w-full grid place-items-center h-[90%]">
+      <button onClick={() => signInWithGoogle()} className="p-4 text-lg"
+      >Sign in with google</button>
+      </div>
+      </div>
     </div>
   );
 };
