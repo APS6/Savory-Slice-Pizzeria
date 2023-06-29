@@ -1,5 +1,6 @@
 import React from 'react'
 import Pizza from './pizza';
+
 const Category = (props) => {
 
    const categories = props.categories;

@@ -1,10 +1,11 @@
 import "./globals.css";
-import { Arvo, Oswald, Merriweather } from "next/font/google";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import { StateContext } from "@/context/stateContext";
 import { AuthContextProvider } from "@/context/authContext";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 
 export const metadata = {
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
         <Toaster />
         <main className="w-full max-w-[1366px] m-auto px-5 relative">
         <Nav />
+        <Suspense fallback={<Loading />}>
         {children}
+        </Suspense>
         <Footer />
         </main>
         </StateContext>

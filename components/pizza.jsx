@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import { urlForImage } from "@/sanity/lib/image";
 import { useStateContext } from "@/context/stateContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Pizza = (props) => {
   const pizzas = props.pizzas;
@@ -67,11 +68,13 @@ const Pizza = (props) => {
               className="bg-[#ffddb3] max-w-[400px] flex flex-col items-center rounded p-2 justify-around gap-4"
             >
               {pizza.image ? (
-                <Image
-                  src={urlForImage(pizza.image)}
-                  alt={pizza.slug.current}
-                  className="w-full h-[50%] rounded"
-                />
+                <Suspense fallback={<p>Loading Image...</p>}>
+                  <Image
+                    src={urlForImage(pizza.image)}
+                    alt={pizza.slug.current}
+                    className="w-full h-[50%] rounded"
+                  />
+                </Suspense>
               ) : (
                 <div>Failed to load image</div>
               )}
@@ -134,71 +137,145 @@ const Pizza = (props) => {
           );
         }
       })}
+        <AnimatePresence>
       {selected && (
-        <div className="bg-[#fdd7a9] rounded py-4 px-[1.5rem]  md:w-[80%] md:max-w-[740px] md:h-80 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col md:flex-row items-center justify-evenly">
-          <Image
-            src={urlForImage(selPizza.image)}
-            alt={selPizza.slug.current}
-            className=" w-[90%] md:w-1/2 md:h-[80%] max-w-[370px] object-cover rounded"
-          />
-          <div className="flex flex-col gap-8 mt-2 md:mt-0">
-            <div>
-              <h4 className="text-xl">{selPizza.name}</h4>{" "}
-              <span className="text-sm">
-                {selPizza.size === "Regular" ? (
-                  <span>7</span>
-                ) : selPizza.size === "Medium" ? (
-                  <span>10</span>
-                ) : selPizza.size === "Large" ? (
-                  <span>12</span>
-                ) : (
-                  ""
-                )}{" "}
-                inches
-              </span>
-            </div>
-            <div className="flex gap-6">
-              <div
-                onClick={() => sizehandler("Regular")}
-                className="flex gap-1 items-center cursor-pointer"
-              >
-                <span>Regular</span>
-                <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
+          <motion.div 
+          initial={{ opacity: 0, x: '-50%', y: '-30%' }}
+          animate={{opacity: 1, y: '-50%', x: '-50%'}}
+          exit={{opacity: 0, y: '-100%'}}
+          className="bg-[#fdd7a9] rounded py-4 px-[1.5rem]  md:w-[80%] md:max-w-[740px] md:h-80 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col md:flex-row items-center justify-evenly">
+            <Image
+              src={urlForImage(selPizza.image)}
+              alt={selPizza.slug.current}
+              className=" w-[90%] md:w-1/2 md:h-[80%] max-w-[370px] object-cover rounded"
+            />
+            <div className="flex flex-col gap-8 mt-2 md:mt-0">
+              <div>
+                <h4 className="text-xl">{selPizza.name}</h4>{" "}
+                <span className="text-sm">
                   {selPizza.size === "Regular" ? (
-                    <svg
-                      width="13"
-                      height="10"
-                      viewBox="0 0 13 10"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <line
-                        x1="0.344754"
-                        y1="4.63786"
-                        x2="4.90771"
-                        y2="8.98176"
-                        stroke="white"
-                      />
-                      <line
-                        x1="4.62893"
-                        y1="8.55404"
-                        x2="11.7536"
-                        y2="0.664897"
-                        stroke="white"
-                      />
-                    </svg>
+                    <span>7</span>
+                  ) : selPizza.size === "Medium" ? (
+                    <span>10</span>
+                  ) : selPizza.size === "Large" ? (
+                    <span>12</span>
                   ) : (
                     ""
-                  )}
+                  )}{" "}
+                  inches
+                </span>
+              </div>
+              <div className="flex gap-6">
+                <div
+                  onClick={() => sizehandler("Regular")}
+                  className="flex gap-1 items-center cursor-pointer"
+                >
+                  <span>Regular</span>
+                  <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
+                    {selPizza.size === "Regular" ? (
+                      <svg
+                        width="13"
+                        height="10"
+                        viewBox="0 0 13 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <line
+                          x1="0.344754"
+                          y1="4.63786"
+                          x2="4.90771"
+                          y2="8.98176"
+                          stroke="white"
+                        />
+                        <line
+                          x1="4.62893"
+                          y1="8.55404"
+                          x2="11.7536"
+                          y2="0.664897"
+                          stroke="white"
+                        />
+                      </svg>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+                <div
+                  onClick={() => sizehandler("Medium")}
+                  className="flex gap-1 items-center cursor-pointer"
+                >
+                  <span>Medium</span>
+                  <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
+                    {selPizza.size === "Medium" ? (
+                      <svg
+                        width="13"
+                        height="10"
+                        viewBox="0 0 13 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <line
+                          x1="0.344754"
+                          y1="4.63786"
+                          x2="4.90771"
+                          y2="8.98176"
+                          stroke="white"
+                        />
+                        <line
+                          x1="4.62893"
+                          y1="8.55404"
+                          x2="11.7536"
+                          y2="0.664897"
+                          stroke="white"
+                        />
+                      </svg>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+                <div
+                  onClick={() => sizehandler("Large")}
+                  className="flex gap-1 items-center cursor-pointer"
+                >
+                  <span>Large</span>
+                  <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
+                    {selPizza.size === "Large" ? (
+                      <svg
+                        width="13"
+                        height="10"
+                        viewBox="0 0 13 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <line
+                          x1="0.344754"
+                          y1="4.63786"
+                          x2="4.90771"
+                          y2="8.98176"
+                          stroke="white"
+                        />
+                        <line
+                          x1="4.62893"
+                          y1="8.55404"
+                          x2="11.7536"
+                          y2="0.664897"
+                          stroke="white"
+                        />
+                      </svg>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
               </div>
               <div
-                onClick={() => sizehandler("Medium")}
+                onClick={() => cheeseHandler()}
                 className="flex gap-1 items-center cursor-pointer"
               >
-                <span>Medium</span>
+                Extra Cheese
                 <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
-                  {selPizza.size === "Medium" ? (
+                  {selPizza.cheese && (
                     <svg
                       width="13"
                       height="10"
@@ -221,142 +298,74 @@ const Pizza = (props) => {
                         stroke="white"
                       />
                     </svg>
-                  ) : (
-                    ""
                   )}
                 </div>
               </div>
-              <div
-                onClick={() => sizehandler("Large")}
-                className="flex gap-1 items-center cursor-pointer"
-              >
-                <span>Large</span>
-                <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
-                  {selPizza.size === "Large" ? (
-                    <svg
-                      width="13"
-                      height="10"
-                      viewBox="0 0 13 10"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <line
-                        x1="0.344754"
-                        y1="4.63786"
-                        x2="4.90771"
-                        y2="8.98176"
-                        stroke="white"
-                      />
-                      <line
-                        x1="4.62893"
-                        y1="8.55404"
-                        x2="11.7536"
-                        y2="0.664897"
-                        stroke="white"
-                      />
-                    </svg>
-                  ) : (
-                    ""
-                  )}
+              <div className="flex justify-between">
+                <span className="text-2xl">${selPizza.tprice}</span>
+                <div
+                  className="px-4 py-2 bg-[#ff8d30] rounded-md text-[white] cursor-pointer"
+                  onClick={() => {
+                    addItems(selPizza), resetselected();
+                  }}
+                >
+                  Add to Cart
                 </div>
               </div>
             </div>
             <div
-              onClick={() => cheeseHandler()}
-              className="flex gap-1 items-center cursor-pointer"
+              onClick={() => resetselected()}
+              className="absolute top-2 right-2 w-8 h-8 grid place-items-center cursor-pointer"
             >
-              Extra Cheese
-              <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
-                {selPizza.cheese && (
-                  <svg
-                    width="13"
-                    height="10"
-                    viewBox="0 0 13 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <line
-                      x1="0.344754"
-                      y1="4.63786"
-                      x2="4.90771"
-                      y2="8.98176"
-                      stroke="white"
-                    />
-                    <line
-                      x1="4.62893"
-                      y1="8.55404"
-                      x2="11.7536"
-                      y2="0.664897"
-                      stroke="white"
-                    />
-                  </svg>
-                )}
-              </div>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-2xl">${selPizza.tprice}</span>
-              <div
-                className="px-4 py-2 bg-[#ff8d30] rounded-md text-[white] cursor-pointer"
-                onClick={() => {
-                  addItems(selPizza), resetselected();
-                }}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 40 40"
+                enableBackground="new 0 0 40 40"
               >
-                Add to Cart
-              </div>
+                <line
+                  x1="15"
+                  y1="15"
+                  x2="25"
+                  y2="25"
+                  stroke="black"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                />
+                <line
+                  x1="25"
+                  y1="15"
+                  x2="15"
+                  y2="25"
+                  stroke="black"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                />
+                <circle
+                  cx="20"
+                  cy="20"
+                  r="19"
+                  opacity="0"
+                  stroke="black"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                  fill="none"
+                />
+                <path
+                  d="M20 1c10.45 0 19 8.55 19 19s-8.55 19-19 19-19-8.55-19-19 8.55-19 19-19z"
+                  stroke="black"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                  fill="none"
+                />
+              </svg>
             </div>
-          </div>
-          <div
-            onClick={() => resetselected()}
-            className="absolute top-2 right-2 w-8 h-8 grid place-items-center cursor-pointer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 40 40"
-              enableBackground="new 0 0 40 40"
-            >
-              <line
-                x1="15"
-                y1="15"
-                x2="25"
-                y2="25"
-                stroke="black"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeMiterlimit="10"
-              />
-              <line
-                x1="25"
-                y1="15"
-                x2="15"
-                y2="25"
-                stroke="black"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeMiterlimit="10"
-              />
-              <circle
-                cx="20"
-                cy="20"
-                r="19"
-                opacity="0"
-                stroke="black"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeMiterlimit="10"
-                fill="none"
-              />
-              <path
-                d="M20 1c10.45 0 19 8.55 19 19s-8.55 19-19 19-19-8.55-19-19 8.55-19 19-19z"
-                stroke="black"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeMiterlimit="10"
-                fill="none"
-              />
-            </svg>
-          </div>
-        </div>
+          </motion.div>
       )}
+      </AnimatePresence>
     </>
   );
 };
