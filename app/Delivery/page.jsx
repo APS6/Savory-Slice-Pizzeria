@@ -54,7 +54,7 @@ const Delivery = () => {
 
   useEffect(() => {
     fetchData();
-  }, [user.uid]);
+  }, [user && user.uid]);
 
   const formHandler = async (e) => {
     e.preventDefault();
