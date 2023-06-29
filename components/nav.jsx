@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Nav = () => {
   return (
-    <nav className="w-full flex items-center m-auto h-16 z-50 fixed bg-colbg md:bg-none top-0">
+    <nav className="w-full flex items-center max-w-[1366px] h-16 z-50 fixed bg-colbg md:bg-none top-0">
       <div className="w-[91%] md:w-[96%] flex justify-between items-center">
       <h2><Link href="/"  className="text-xl md:text-3xl font-ff1 flex gap-[.5ch]"><span>Savory</span><span className="hidden min-[380px]:block">Slice</span></Link></h2>
       <ul className="flex gap-4 md:gap-16 items-center md:text-lg font-ff2">
