@@ -1,8 +1,8 @@
 import "./globals.css";
-import Nav from "@/components/nav";
-import Footer from "@/components/footer";
-import { StateContext } from "@/context/stateContext";
-import { AuthContextProvider } from "@/context/authContext";
+import Nav from "../../components/nav";
+import Footer from "../../components/footer";
+import { StateContext } from "../../context/stateContext";
+import { AuthContextProvider } from "../../context/authContext";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import Loading from "./loading";

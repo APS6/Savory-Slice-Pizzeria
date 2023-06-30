@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState,} from "react";
-import addData from "@/firebase/firestore/addData";
-import { useAuthContext } from "@/context/authContext";
-import { useStateContext } from "@/context/stateContext";
-import getStripe from "@/lib/getStripe";
+import addData from "../../../firebase/firestore/addData";
+import { useAuthContext } from "../../../context/authContext";
+import { useStateContext } from "../../../context/stateContext";
+import getStripe from "../../../lib/getStripe";
 import toast from 'react-hot-toast';
 
 const Delivery = () => {

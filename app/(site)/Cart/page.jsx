@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import CartItems from "@/components/cartitems";
-import Bill from "@/components/bill";
-import Checkout from "@/components/mobilecheckout";
+import CartItems from "../../../components/cartitems";
+import Bill from "../../../components/bill";
+import Checkout from "../../../components/mobilecheckout";
 
 const Cart = () => {
   return (
