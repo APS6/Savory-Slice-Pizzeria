@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useAuthContext } from "./authContext";
-import getDocument from "@/firebase/firestore/getData";
+import getDocument from "../firebase/firestore/getData";
 
 const Context = createContext();
 

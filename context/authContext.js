@@ -5,7 +5,7 @@ import {
     onAuthStateChanged,
     getAuth,
 } from 'firebase/auth';
-import { initFirebase } from '@/firebase/app';
+import { initFirebase } from '../firebase/app';
 
 const auth = getAuth(initFirebase());
 

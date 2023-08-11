@@ -2,8 +2,8 @@
 
 import React, { Suspense, useState } from "react";
 import Image from "next/image";
-import { urlForImage } from "@/sanity/lib/image";
-import { useStateContext } from "@/context/stateContext";
+import { urlForImage } from "../sanity/lib/image";
+import { useStateContext } from "../context/stateContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Pizza = (props) => {
