@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { useStateContext } from "@/context/stateContext";
-import { useAuthContext } from "@/context/authContext";
+import { useStateContext } from "../context/stateContext";
+import { useAuthContext } from "../context/authContext";
 import Link from "next/link";
 
 const Bill = () => {

@@ -1,7 +1,7 @@
 "use client";
-import { useStateContext } from "@/context/stateContext";
+import { useStateContext } from "../context/stateContext";
 import Image from "next/image";
-import { urlForImage } from "@/sanity/lib/image";
+import { urlForImage } from "../sanity/lib/image";
 import { useEffect, useState } from "react";
 
 const CartItems = () => {

@@ -1,7 +1,6 @@
-import React from "react";
-import { useStateContext } from "@/context/stateContext";
+import { useStateContext } from "../context/stateContext";
 import Link from "next/link";
-import { useAuthContext } from "@/context/authContext";
+import { useAuthContext } from "../context/authContext";
 
 const Checkout = () => {
   const { finalPrice, qty, cartItems } = useStateContext();
