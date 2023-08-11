@@ -34,11 +34,11 @@ const CartItems = () => {
   }
   return (
     <div className="">
-      <div className={` overflow-scroll ${!expanded ? "max-h-[380px]" : ""}`}>
+      <div className={` overflow-y-scroll ${!expanded ? "max-h-[380px]" : ""}`}>
         {cartItems.map((pizza) => (
           <div
             key={pizza._id + pizza.size + pizza.cheese}
-            className="mb-8 bg-[#ffddb3] flex items-center p-2 gap-2 rounded"
+            className="mb-8s shadow bg-[#ffddb3] flex items-center p-2 gap-2 rounded"
           >
             <Image
               src={urlForImage(pizza.image)}

@@ -65,7 +65,7 @@ const Pizza = (props) => {
           return (
             <div
               key={pizza._id}
-              className="bg-[#ffddb3] max-w-[400px] flex flex-col items-center rounded p-2 justify-around gap-4"
+              className="bg-[#ffddb3] shadow max-w-[400px] flex flex-col items-center rounded p-2 justify-around gap-4"
             >
               {pizza.image ? (
                 <Suspense fallback={<p>Loading Image...</p>}>
@@ -143,7 +143,7 @@ const Pizza = (props) => {
           initial={{ opacity: 0, x: '-50%', y: '-30%' }}
           animate={{opacity: 1, y: '-50%', x: '-50%'}}
           exit={{opacity: 0, y: '-100%'}}
-          className="bg-[#fdd7a9] rounded py-4 px-[1.5rem]  md:w-[80%] md:max-w-[740px] md:h-80 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col md:flex-row items-center justify-evenly">
+          className="bg-[#fdd7a9] shadow rounded py-4 px-[1.5rem]  md:w-[80%] md:max-w-[740px] md:h-80 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col md:flex-row items-center justify-evenly">
             <Image
               src={urlForImage(selPizza.image)}
               alt={selPizza.slug.current}

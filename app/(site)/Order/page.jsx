@@ -47,7 +47,7 @@ export default async function Order() {
     <h1 className="text-col2 text-7xl md:text-8xl font-ff1 leading-[1.2] over">Order. Eat. <br /> Enjoy. </h1>
     <p className="my-7 text-lg md:text-2xl">Pizza Delivered at Your Doorstep!</p>
     </div>
-    <Image src="/box-pizza.png" height="492" width="441" alt="pizza" className=" hidden md:block w-[40%] pr-4"/>
+    <Image src="/box-pizza.png" height="492" width="441" alt="pizza" className=" hidden md:block w-[36%] pr-4"/>
       </section>
      <Category categories={categories} pizzas={pizzas}/>
     </div>

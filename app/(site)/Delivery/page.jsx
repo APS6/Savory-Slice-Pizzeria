@@ -88,7 +88,7 @@ const Delivery = () => {
 
   return (
     <div className="md:flex py-24 justify-center">
-      {info && (
+      {info.address && (
         <div className="grid place-items-center md:w-[32%] md:border-r-2 border-r-col4 pb-16 md:pb-0">
           <div className="w-[70%] md:w-auto">
             <h2 className="text-3xl text-col2 pb-2 md:pb-6">Continue as -</h2>
