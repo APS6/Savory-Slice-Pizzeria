@@ -9,34 +9,22 @@ export default async function Home() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-16 md:gap-0">
           <div className="md:pl-24 pt-12 relative text-center md:text-left overflow-x-hidden">
             <h1
-            intitial={{opacity:0, y:10}}
-            animate={{opacity: 1, y:0}}
-            transition={{duration: 1}}
-            className="text-col2 text-7xl md:text-8xl font-ff1 leading-[1.2] lines relative inline">
+            className="text-col2 text-7xl md:text-8xl font-ff1 leading-[1.2] relative inline">
               Savory
               <br />
               Slice
             </h1>
             <p 
-            intitial={{opacity:0, y:10}}
-            animate={{opacity: 1, y:0}}
-            transition={{duration: 1}}
             className="my-7 md:w-[70%] text-lg md:text-2xl">
               Delicious Pizza Crafted with Passion
             </p>
             <Link href="/Order">
               <button 
-              intitial={{opacity:0, y:10}}
-              animate={{opacity: 1, y:0}}
-              transition={{duration: 1}}
               className="btn text-2xl">
                 <span>Get a Slice!</span>
               </button>
             </Link>
             <div 
-            intitial={{opacity:0, y:10}}
-            animate={{opacity: 1, y:0}}
-            transition={{duration: 1}}
             className="absolute top-[-9%] -left-4 md:left-0 w-[50%]">
               <svg
                 width="183"

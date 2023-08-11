@@ -18,25 +18,6 @@
 }
 
 
-.lines::after{
-  content: '';
-  width: 50%;
-  height: 2px;
-  background-color: #DB3A34;
-  position: absolute;
-  right:-55%;
-  top: 55%;
-}
-.lines::before{
-  content: '';
-  width: 30%;
-  height: 2px;
-  background-color: #DB3A34;
-  position: absolute;
-  left:-31%;
-  top: 55%;
-}
-
 @media (max-width: 768px){
   .lines::after{
     width: 30%;

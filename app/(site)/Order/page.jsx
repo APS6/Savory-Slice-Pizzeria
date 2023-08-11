@@ -3,7 +3,7 @@ import { client } from "../../../sanity/lib/client";
 import Category from "../../../components/category";
 import Image from "next/image";
 
-
+export const dynamic = 'force-dynamic'
 // Sanity API 
 async function getData() {
   const query = '*[_type == "pizza"]';

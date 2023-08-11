@@ -179,7 +179,7 @@ const Delivery = () => {
               />
             </div>
           </div>
-          <button type="submit" disabled={isdisabled} className="btn text-xl px-8">
+          <button onClick={() => handleCheckout()} type="submit" disabled={isdisabled} className="btn text-xl px-8">
             {isloading ? 'Redirecting' : 'Pay now'}
           </button>
         </form>
