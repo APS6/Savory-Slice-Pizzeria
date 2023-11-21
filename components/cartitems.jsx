@@ -34,7 +34,7 @@ const CartItems = () => {
   }
   return (
     <div className="">
-      <div className={` overflow-y-scroll ${!expanded ? "max-h-[380px]" : ""}`}>
+      <div className={` overflow-y-auto ${!expanded ? "max-h-[380px]" : ""}`}>
         {cartItems.map((pizza) => (
           <div
             key={pizza._id + pizza.size + pizza.cheese}

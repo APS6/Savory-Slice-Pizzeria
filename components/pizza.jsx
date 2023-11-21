@@ -4,7 +4,7 @@ import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import { urlForImage } from "../sanity/lib/image";
 import { useStateContext } from "../context/stateContext";
-import { motion, AnimatePresence } from "framer-motion";
+import * as Dialog from "@radix-ui/react-dialog";
 
 const Pizza = (props) => {
   const pizzas = props.pizzas;
@@ -18,9 +18,6 @@ const Pizza = (props) => {
     setSelected(true);
     el = { ...el, size: "Regular", cheese: false, tprice: el.price };
     setSelPizza(el);
-  };
-  const resetselected = () => {
-    setSelected(false);
   };
 
   const sizehandler = (e) => {
@@ -43,13 +40,13 @@ const Pizza = (props) => {
   const cheeseHandler = () => {
     setSelPizza((prevsel) => ({ ...prevsel, cheese: !prevsel.cheese }));
 
-    if (!selPizza.cheese === true) {
+    if (!selPizza?.cheese === true) {
       setSelPizza((prevsel) => ({
         ...prevsel,
         tprice: (parseFloat(prevsel.tprice) + 2).toFixed(2),
         price: (parseFloat(prevsel.tprice) + 2).toFixed(2),
       }));
-    } else if (selPizza.cheese === true) {
+    } else if (selPizza?.cheese === true) {
       setSelPizza((prevsel) => ({
         ...prevsel,
         tprice: (parseFloat(prevsel.tprice) - 2).toFixed(2),
@@ -60,7 +57,7 @@ const Pizza = (props) => {
 
   return (
     <>
-      {pizzas.map((pizza) => {
+      {pizzas?.map((pizza) => {
         if (catslug == pizza.category) {
           return (
             <div
@@ -137,27 +134,25 @@ const Pizza = (props) => {
           );
         }
       })}
-        <AnimatePresence>
-      {selected && (
-          <motion.div 
-          initial={{ opacity: 0, x: '-50%', y: '-30%' }}
-          animate={{opacity: 1, y: '-50%', x: '-50%'}}
-          exit={{opacity: 0, y: '-100%'}}
-          className="bg-[#fdd7a9] shadow rounded py-4 px-[1.5rem]  md:w-[80%] md:max-w-[740px] md:h-80 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col md:flex-row items-center justify-evenly">
+
+      <Dialog.Root open={selected} onOpenChange={setSelected}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 bg-[#000000] opacity-50 z-[69]" />
+          <Dialog.Content className="bg-[#fdd7a9] shadow rounded z-[70] py-4 px-[1.5rem] md:w-[80%] md:max-w-[740px] md:h-80 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col md:flex-row items-center justify-evenly">
             <Image
-              src={urlForImage(selPizza.image)}
-              alt={selPizza.slug.current}
+              src={urlForImage(selPizza?.image)}
+              alt={selPizza?.slug?.current}
               className=" w-[90%] md:w-1/2 md:h-[80%] max-w-[370px] object-cover rounded"
             />
             <div className="flex flex-col gap-8 mt-2 md:mt-0">
               <div>
-                <h4 className="text-xl">{selPizza.name}</h4>{" "}
+                <h4 className="text-xl">{selPizza?.name}</h4>
                 <span className="text-sm">
-                  {selPizza.size === "Regular" ? (
+                  {selPizza?.size === "Regular" ? (
                     <span>7</span>
-                  ) : selPizza.size === "Medium" ? (
+                  ) : selPizza?.size === "Medium" ? (
                     <span>10</span>
-                  ) : selPizza.size === "Large" ? (
+                  ) : selPizza?.size === "Large" ? (
                     <span>12</span>
                   ) : (
                     ""
@@ -172,7 +167,7 @@ const Pizza = (props) => {
                 >
                   <span>Regular</span>
                   <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
-                    {selPizza.size === "Regular" ? (
+                    {selPizza?.size === "Regular" ? (
                       <svg
                         width="13"
                         height="10"
@@ -206,7 +201,7 @@ const Pizza = (props) => {
                 >
                   <span>Medium</span>
                   <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
-                    {selPizza.size === "Medium" ? (
+                    {selPizza?.size === "Medium" ? (
                       <svg
                         width="13"
                         height="10"
@@ -240,7 +235,7 @@ const Pizza = (props) => {
                 >
                   <span>Large</span>
                   <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
-                    {selPizza.size === "Large" ? (
+                    {selPizza?.size === "Large" ? (
                       <svg
                         width="13"
                         height="10"
@@ -275,7 +270,7 @@ const Pizza = (props) => {
               >
                 Extra Cheese
                 <div className="bg-[#ff8d30] w-4 h-4 rounded-full grid place-items-center">
-                  {selPizza.cheese && (
+                  {selPizza?.cheese && (
                     <svg
                       width="13"
                       height="10"
@@ -302,70 +297,34 @@ const Pizza = (props) => {
                 </div>
               </div>
               <div className="flex justify-between">
-                <span className="text-2xl">${selPizza.tprice}</span>
+                <span className="text-2xl">${selPizza?.tprice}</span>
                 <div
                   className="px-4 py-2 bg-[#ff8d30] rounded-md text-[white] cursor-pointer"
                   onClick={() => {
-                    addItems(selPizza), resetselected();
+                    addItems(selPizza), setSelected(false);
                   }}
                 >
                   Add to Cart
                 </div>
               </div>
             </div>
-            <div
-              onClick={() => resetselected()}
-              className="absolute top-2 right-2 w-8 h-8 grid place-items-center cursor-pointer"
-            >
+            <Dialog.Close className="absolute top-2 right-2 p-1 text-[#000] hover:bg-[#99999978] rounded-full grid place-items-center cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 40 40"
-                enableBackground="new 0 0 40 40"
+                width="1.5rem"
+                height="1.5rem"
+                viewBox="0 0 24 24"
+                fill="currentColor"
               >
-                <line
-                  x1="15"
-                  y1="15"
-                  x2="25"
-                  y2="25"
-                  stroke="black"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeMiterlimit="10"
-                />
-                <line
-                  x1="25"
-                  y1="15"
-                  x2="15"
-                  y2="25"
-                  stroke="black"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeMiterlimit="10"
-                />
-                <circle
-                  cx="20"
-                  cy="20"
-                  r="19"
-                  opacity="0"
-                  stroke="black"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeMiterlimit="10"
-                  fill="none"
-                />
                 <path
-                  d="M20 1c10.45 0 19 8.55 19 19s-8.55 19-19 19-19-8.55-19-19 8.55-19 19-19z"
-                  stroke="black"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeMiterlimit="10"
-                  fill="none"
-                />
+                  fill="currentColor"
+                  d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275q-.275-.275-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275q.275.275.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7q-.275.275-.7.275t-.7-.275L12 13.4Z"
+                ></path>
               </svg>
-            </div>
-          </motion.div>
-      )}
-      </AnimatePresence>
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </>
   );
 };

@@ -39,7 +39,6 @@ export const metadata = {
 export default async function Order() {
   const pizzas = await getData();
   const categories = await getCat();
-
   return (
     <div className="grid place-items-center">
       <section className="h-[55vh] mt-8 md:mt-0 md:h-screen md:max-h-[600px] flex items-center w-full relative justify-center md:justify-between">
