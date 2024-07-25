@@ -1,0 +1,235 @@
+<div class="flex w-full">
+  <div class="w-full md:w-[calc(100%-320px)] px-4 sm:px-16">
+    <div class="w-full max-w-7xl m-auto flex flex-col gap-6">
+      <%= for category <- @categories do %>
+        <div id={category.title}>
+          <div class="flex items-center w-full">
+            <div class="w-full h-[2px] bg-black "></div>
+            <h2 class="min-w-fit text-3xl font-merriweather px-4"><%= category.title %></h2>
+            <div class="w-full h-[2px] bg-black "></div>
+          </div>
+          <div class="flex flex-wrap justify-center gap-6 xl:justify-between mt-4">
+            <%= for pizza <- category.pizzas do %>
+              <div class="bg-white rounded-xl flex flex-col gap-2 w-[300px] flex-grow max-w-[360px] min-w-[280px] pb-4">
+                <img
+                  class="object-cover h-36 rounded-t-xl"
+                  src={"/images/pizza/#{pizza.imgUrl}"}
+                  alt={pizza.title}
+                />
+                <div class="px-4">
+                  <h3 class="text-2xl font-merriweather mx-auto w-fit"><%= pizza.title %></h3>
+                  <p class="mt-1 h-[3lh]"><%= pizza.description %></p>
+                  <div class="flex items-center justify-between mt-2">
+                    <div>
+                      <span class="text-2xl"><%= pizza.price %>$</span>
+                      <span class="text-xl line-through decoration-gray-600 text-gray-600">
+                        <%= pizza.full_price %>$
+                      </span>
+                    </div>
+                    <%= if pizza.veg do %>
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect x="0.5" y="0.5" width="11" height="11" stroke="#4A8B2B" />
+                        <circle cx="6" cy="6" r="3" fill="#4A8B2B" />
+                      </svg>
+                    <% else %>
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect x="0.5" y="0.5" width="11" height="11" stroke="#764C4C" />
+                        <circle cx="6" cy="6" r="3" fill="#764C4C" />
+                      </svg>
+                    <% end %>
+                  </div>
+                  <button
+                    phx-click="show_modal"
+                    phx-value-pizza_id={pizza.id}
+                    class=" mt-2  border-2 border-vermillion text-vermillion text-xl py-3 w-full rounded"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <.live_component module={BasketSidebar} id="basket" basket={@basket} />
+</div>
+
+<%= if @modal_pizza do %>
+  <div
+    id="cartModal"
+    phx-click-away="hide_modal"
+    phx-window-keydown="hide_modal"
+    phx-key="Escape"
+    phx-mounted={
+      JS.show(
+        to: "#cartModal",
+        transition: {"ease-out duration-300", "opacity-0", "opacity-100"},
+        display: "flex"
+      )
+    }
+    class="hidden w-[90%] md:w-auto md:aspect-[9/4] h-auto md:h-96 bg-white z-[1002] fixed top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 rounded flex flex-col md:flex-row"
+  >
+    <div class="md:w-1/2 md:h-full flex items-center px-4 pt-4 pb-2 md:p-0 gap-2 border-b border-b-black md:border-0">
+      <img
+        class=" w-[30%] md:h-full md:w-full rounded md:rounded-r-none md:object-cover"
+        src={"/images/pizza/#{@modal_pizza.imgUrl}"}
+        alt={@modal_pizza.title}
+      />
+      <h3 class=" block md:hidden text-2xl sm:text-3xl font-merriweather m-auto w-fit">
+        <%= @modal_pizza.title %>
+      </h3>
+    </div>
+    <form
+      id="addToBasketForm"
+      phx-hook="saveCartToSession"
+      phx-submit="add_basket_item"
+      class="flex-1 py-2 px-4 md:px-8"
+    >
+      <input type="text" class="hidden" name="id" value={@modal_pizza.id} />
+      <input type="text" class="hidden" name="title" value={@modal_pizza.title} />
+      <h3 class=" hidden md:block text-3xl font-merriweather m-auto w-fit">
+        <%= @modal_pizza.title %>
+      </h3>
+      <div class="pt-4">
+        <h4 class="text-xl leading-relaxed">Size</h4>
+        <ul>
+          <li class="flex justify-between">
+            <label for="regular_size">Regular [ 7 inches ]</label>
+            <div>
+              <span><%= @modal_pizza.price %>$</span>
+              <input
+                id="regular_size"
+                type="radio"
+                name="size"
+                value="regular"
+                checked
+                class="text-tomato border-tomato focus:ring-tomato cursor-pointer"
+              />
+            </div>
+          </li>
+          <li class="flex justify-between pt-1">
+            <label for="medium_size">Medium [ 10 inches ]</label>
+            <div>
+              <span><%= @modal_pizza.medium_price %>$</span>
+              <input
+                id="medium_size"
+                type="radio"
+                name="size"
+                value="medium"
+                class="text-tomato border-tomato focus:ring-tomato  cursor-pointer"
+              />
+            </div>
+          </li>
+          <li class="flex justify-between pt-1">
+            <label for="large_size">Large [ 12 inches ]</label>
+            <div>
+              <span><%= @modal_pizza.large_price %>$</span>
+              <input
+                id="large_size"
+                type="radio"
+                name="size"
+                value="large"
+                class="text-tomato border-tomato focus:ring-tomato  cursor-pointer"
+              />
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="pt-4">
+        <h4 class="text-xl leading-relaxed">Crust</h4>
+        <ul>
+          <li for="hand_crust" class="flex justify-between">
+            <label>Hand Tossed</label>
+            <div>
+              <span>0$</span>
+              <input
+                id="hand_crust"
+                type="radio"
+                name="crust"
+                value="free"
+                checked
+                class="text-tomato border-tomato focus:ring-tomato  cursor-pointer"
+              />
+            </div>
+          </li>
+          <li for="pan_crust" class="flex justify-between pt-1">
+            <label>Pan Crust</label>
+            <div>
+              <span>0.6$</span>
+              <input
+                id="pan_crust"
+                type="radio"
+                name="crust"
+                value="pan"
+                class="text-tomato border-tomato focus:ring-tomato  cursor-pointer"
+              />
+            </div>
+          </li>
+          <li class="flex justify-between pt-1">
+            <label for="cheese_crust">Cheese Burst</label>
+            <div>
+              <span>1$</span>
+              <input
+                id="cheese_crust"
+                type="radio"
+                name="crust"
+                value="cheese"
+                class="text-tomato border-tomato focus:ring-tomato  cursor-pointer"
+              />
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class=" mt-4 flex justify-between">
+        <div
+          phx-hook="toggleQuantity"
+          id="quantityToggle"
+          class="border-tomato border rounded-lg flex items-center gap-1 text-xl"
+        >
+          <div
+            data-id="decBtn"
+            class="flex-1 h-full px-3 cursor-pointer grid place-items-center text-tomato select-none"
+          >
+            -
+          </div>
+          <input
+            data-id="qtyInput"
+            name="quantity"
+            type="number"
+            value="1"
+            min="1"
+            max="10"
+            readonly
+            class="hidden"
+          />
+          <div data-id="qtyDiv">1</div>
+          <div
+            data-id="incBtn"
+            class="flex-1 h-full px-3 cursor-pointer grid place-items-center text-tomato select-none"
+          >
+            +
+          </div>
+        </div>
+        <button type="submit" class="bg-tomato rounded-lg text-white text-lg sm:text-xl px-6 py-3">
+          Add To Basket
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div id="overlay" class="h-screen w-screen fixed inset-0 z-[99] bg-black opacity-40"></div>
+<% end %>

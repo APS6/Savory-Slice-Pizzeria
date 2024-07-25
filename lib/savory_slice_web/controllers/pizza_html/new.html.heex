@@ -1,0 +1,8 @@
+<.header>
+  New Pizza
+  <:subtitle>Use this form to manage pizza records in your database.</:subtitle>
+</.header>
+
+<.pizza_form changeset={@changeset} action={~p"/admin/pizzas"} categories={@categories} />
+
+<.back navigate={~p"/admin/pizzas"}>Back to pizzas</.back>

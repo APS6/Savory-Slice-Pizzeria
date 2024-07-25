@@ -1,0 +1,98 @@
+<.simple_form :let={f} for={@changeset} action={@action}>
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+  <.input field={f[:title]} type="text" label="Title" />
+  <.input field={f[:imgUrl]} type="text" label="Imgurl" />
+  <.input field={f[:description]} type="text" label="Description" />
+  <.input field={f[:full_price]} type="text" label="Full price" />
+  <.input field={f[:price]} type="text" label="Price" />
+  <.input field={f[:medium_price]} type="text" label="MediumPrice" />
+  <.input field={f[:large_price]} type="text" label="Large Price" />
+  <.input field={f[:veg]} type="checkbox" label="Veg" />
+  <div>
+    <label class="block text-sm font-semibold leading-6 text-zinc-800" for="pizza_category_ids">
+      Categories
+    </label>
+    <div class="border border-zinc-300 rounded p-1">
+      <.input
+        id="selectCategory"
+        field={f[:category_ids]}
+        type="select"
+        multiple={true}
+        class="overflow-auto w-full border-0 focus:shadow-none focus:outline-0 focus:border-none focus:ring-0 "
+        style={"height: calc(#{length(@categories)} * 20px + 16px);"}
+        options={@categories}
+      />
+
+      <div class="flex flex-col items-center">
+        <input
+          id="categoryInput"
+          type="text"
+          placeholder="New Category"
+          class="border-0 focus:outline-0 focus:ring-0 w-full"
+        />
+        <div
+          id="submitCategoryBtn"
+          class="hidden rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3 text-sm font-semibold leading-6 text-white cursor-pointer"
+        >
+          Add Category
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <:actions>
+    <.button>Save Pizza</.button>
+  </:actions>
+</.simple_form>
+
+<script>
+  const selectCategory = document.querySelector("#selectCategory")
+  const categoryInput = document.querySelector("#categoryInput")
+  const submitCategoryBtn = document.querySelector("#submitCategoryBtn")
+
+  categoryInput.addEventListener('input', () => {
+    if (categoryInput.value.length > 0) {
+      submitCategoryBtn.classList.remove("hidden")
+    } else {
+      submitCategoryBtn.classList.add("hidden")
+    }
+  })
+
+  submitCategoryBtn.addEventListener('click', async () => {
+    const newCategory = categoryInput.value
+    const createdCategory = await SaveCategory(newCategory)
+    const newOption = document.createElement('option')
+    newOption.text = createdCategory.title
+    newOption.value = createdCategory.id
+    newOption.selected = true
+    selectCategory.appendChild(newOption)
+    selectCategory.style.height = `${selectCategory.options.length * 20 + 16}px`
+    categoryInput.value = ''
+    submitCategoryBtn.classList.add("hidden")
+
+  })
+
+  async function SaveCategory(name) {
+    const categoryParams = {
+    title: name
+    };
+
+    const response = await fetch("<%= ~p"/api/admin/category" %>", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ category: categoryParams })
+    })
+      
+    const data = await response.json();
+    if (response.ok) {
+      return data.category;
+    } else {
+      console.error('Error:', data);
+      return null;
+    }
+  }
+</script>

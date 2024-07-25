@@ -1,0 +1,28 @@
+<.header>
+  Listing Pizzas
+  <:actions>
+    <.link href={~p"/admin/pizzas/new"}>
+      <.button>New Pizza</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="pizzas" rows={@pizzas} row_click={&JS.navigate(~p"/admin/pizzas/#{&1}")}>
+  <:col :let={pizza} label="Title"><%= pizza.title %></:col>
+  <:col :let={pizza} label="Imgurl"><img src={~p"/images/pizza/#{pizza.imgUrl}"} width="100" class="rounded object-fill" /></:col>
+  <:col :let={pizza} label="Description"><%= pizza.description %></:col>
+  <:col :let={pizza} label="Full price"><%= pizza.full_price %></:col>
+  <:col :let={pizza} label="Price"><%= pizza.price %></:col>
+  <:col :let={pizza} label="Veg"><%= pizza.veg %></:col>
+  <:action :let={pizza}>
+    <div class="sr-only">
+      <.link navigate={~p"/admin/pizzas/#{pizza}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/admin/pizzas/#{pizza}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={pizza}>
+    <.link href={~p"/admin/pizzas/#{pizza}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

@@ -1,0 +1,25 @@
+<.header>
+  Pizza <%= @pizza.id %>
+  <:subtitle>This is a pizza record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/admin/pizzas/#{@pizza}/edit"}>
+      <.button>Edit pizza</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Title"><%= @pizza.title %></:item>
+  <:item title="Imgurl"><img src={~p"/images/pizza/#{@pizza.imgUrl}"} class="rounded object-fill w-full" /></:item>
+  <:item title="Description"><%= @pizza.description %></:item>
+  <:item title="Full price"><%= @pizza.full_price %></:item>
+  <:item title="Price"><%= @pizza.price %></:item>
+  <:item title="Veg"><%= @pizza.veg %></:item>
+  <:item title="Categories">
+    <%= for cat <- @pizza.categories do %>
+      <%= cat.title %> <br />
+    <% end %>
+  </:item>
+</.list>
+
+<.back navigate={~p"/admin/pizzas"}>Back to pizzas</.back>
