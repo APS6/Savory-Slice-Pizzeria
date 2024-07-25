@@ -52,7 +52,7 @@ defmodule SavorySliceWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {SavorySliceWeb.Layouts, :app}
+        layout: {SavorySliceWeb.Layouts, :live}
 
       unquote(html_helpers())
     end

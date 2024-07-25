@@ -1,6 +1,8 @@
 defmodule SavorySliceWeb.Router do
   use SavorySliceWeb, :router
 
+  import SavorySliceWeb.UserAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule SavorySliceWeb.Router do
     plug :put_root_layout, html: {SavorySliceWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_user
   end
 
   pipeline :api do
@@ -16,16 +19,25 @@ defmodule SavorySliceWeb.Router do
 
   scope "/", SavorySliceWeb do
     pipe_through :browser
-
-    get "/", PageController, :home
+    post "/add_to_basket", SessionBasketController, :add
+    post "/update_basket", SessionBasketController, :set
+    live "/", MenuLive
+    live "/basket", BasketLive
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", SavorySliceWeb do
-  #   pipe_through :api
-  # end
+  scope "/admin", SavorySliceWeb do
+    pipe_through :browser
 
-  # Enable LiveDashboard and Swoosh mailbox preview in development
+    get "/", PizzaController, :index
+    resources "/pizzas", PizzaController
+  end
+
+  scope "/api/admin", SavorySliceWeb do
+    pipe_through :api
+
+    post "/category", PizzaController, :createCategory
+  end
+
   if Application.compile_env(:savory_slice, :dev_routes) do
     # If you want to use the LiveDashboard in production, you should put
     # it behind authentication and allow only admins to access it.
@@ -39,6 +51,44 @@ defmodule SavorySliceWeb.Router do
 
       live_dashboard "/dashboard", metrics: SavorySliceWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+    end
+  end
+
+  ## Authentication routes
+
+  scope "/", SavorySliceWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    live_session :redirect_if_user_is_authenticated,
+      on_mount: [{SavorySliceWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      live "/users/register", UserRegistrationLive, :new
+      live "/users/log_in", UserLoginLive, :new
+      live "/users/reset_password", UserForgotPasswordLive, :new
+      live "/users/reset_password/:token", UserResetPasswordLive, :edit
+    end
+
+    post "/users/log_in", UserSessionController, :create
+  end
+
+  scope "/", SavorySliceWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :require_authenticated_user,
+      on_mount: [{SavorySliceWeb.UserAuth, :ensure_authenticated}] do
+      live "/users/settings", UserSettingsLive, :edit
+      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+    end
+  end
+
+  scope "/", SavorySliceWeb do
+    pipe_through [:browser]
+
+    delete "/users/log_out", UserSessionController, :delete
+
+    live_session :current_user,
+      on_mount: [{SavorySliceWeb.UserAuth, :mount_current_user}] do
+      live "/users/confirm/:token", UserConfirmationLive, :edit
+      live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
   end
 end
