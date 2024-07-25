@@ -19,7 +19,6 @@ defmodule SavorySliceWeb.Router do
 
   scope "/", SavorySliceWeb do
     pipe_through :browser
-    post "/add_to_basket", SessionBasketController, :add
     post "/update_basket", SessionBasketController, :set
     live "/", MenuLive
     live "/basket", BasketLive

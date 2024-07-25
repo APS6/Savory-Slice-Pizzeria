@@ -87,7 +87,9 @@ defmodule SavorySliceWeb.MenuLive do
 
       {:noreply,
        assign(
-         socket |> LiveToast.put_toast(:info, "Item added to your basket", action: &viewbtn/1),
+         socket
+         |> LiveToast.put_toast(:info, "Item added to your basket", action: &viewbtn/1)
+         |> push_event("setSessionBasket", %{basket: basket}),
          modal_pizza: nil,
          basket: basket
        )}

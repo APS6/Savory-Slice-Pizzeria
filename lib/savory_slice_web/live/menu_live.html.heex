@@ -93,12 +93,7 @@
         <%= @modal_pizza.title %>
       </h3>
     </div>
-    <form
-      id="addToBasketForm"
-      phx-hook="saveCartToSession"
-      phx-submit="add_basket_item"
-      class="flex-1 py-2 px-4 md:px-8"
-    >
+    <form id="addToBasketForm" phx-submit="add_basket_item" class="flex-1 py-2 px-4 md:px-8">
       <input type="text" class="hidden" name="id" value={@modal_pizza.id} />
       <input type="text" class="hidden" name="title" value={@modal_pizza.title} />
       <h3 class=" hidden md:block text-3xl font-merriweather m-auto w-fit">

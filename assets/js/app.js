@@ -36,39 +36,6 @@ Hooks.toggleQuantity = {
   },
 };
 
-Hooks.saveCartToSession = {
-  mounted() {
-    const csrfToken = document
-      .querySelector("meta[name='csrf-token']")
-      .getAttribute("content");
-
-    this.el.addEventListener("submit", (e) => {
-      let formData = new FormData(e.target);
-      let data = Object.fromEntries(formData);
-      data.pizza_id = data.id;
-      delete data.id;
-      data.quantity = parseInt(data.quantity, 10);
-      fetch(`/add_to_basket`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": csrfToken,
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    });
-  },
-};
-
 Hooks.LiveToast = createLiveToastHook(3000);
 
 let liveSocket = new LiveSocket("/live", Socket, {
