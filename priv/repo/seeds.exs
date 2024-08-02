@@ -9,3 +9,18 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias SavorySlice.Repo
+alias SavorySlice.Accounts.User
+
+Repo.delete_all(User)
+
+admin_users = [
+  %{email: "anirudhapsah@gmail.com", password: System.get_env("ADMIN_PASSWORD")}
+]
+
+Enum.each(admin_users, fn user_attrs ->
+  %User{}
+  |> User.registration_changeset(user_attrs)
+  |> Repo.insert!()
+end)

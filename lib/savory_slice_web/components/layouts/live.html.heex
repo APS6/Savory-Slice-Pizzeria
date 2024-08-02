@@ -1,10 +1,13 @@
-<nav class="fixed bg-white top-0 left-0  w-full flex items-center justify-between border-b border-b-black py-3 px-8">
-  <h3 class="text-3xl font-merriweather text-vermillion"><.link href="/">Savory Slice</.link></h3>
-  <ul class="flex gap-8 text-lg items-center">
-    <li class="hidden md:block"><.link href="#Veg Picks">Veg Picks</.link></li>
-    <li class="hidden md:block"><.link href="#Non-Veg Picks">Non-Veg Picks</.link></li>
-    <li>
-      <.link navigate={~p"/basket"}>
+<nav class="fixed bg-white top-0 left-0  w-full flex items-center justify-between border-b border-b-black py-3 px-4 md:px-8">
+  <h3 class="text-2xl md:text-3xl font-merriweather text-vermillion">
+    <.link href="/">Savory Slice</.link>
+  </h3>
+  <ul class="flex gap-4 md:gap-8 text-lg items-center">
+    <li class="hidden md:block"><.link href="/#Veg Picks">Veg Picks</.link></li>
+    <li class="hidden md:block"><.link href="/#Non-Veg Picks">Non-Veg Picks</.link></li>
+    <li class="md:hidden"><.link href="/">Menu</.link></li>
+    <li class="md:hidden">
+      <.link href={~p"/basket"}>
         <svg
           width="24"
           height="24"
@@ -25,27 +28,6 @@
         </svg>
       </.link>
     </li>
-    <%= if @current_user do %>
-      <li class="text-[0.8125rem] leading-6 text-zinc-900">
-        <%= @current_user.email %>
-      </li>
-      <li>
-        <.link href={~p"/users/settings"} class="">
-          Settings
-        </.link>
-      </li>
-      <li>
-        <.link href={~p"/users/log_out"} method="delete" class="">
-          Log out
-        </.link>
-      </li>
-    <% else %>
-      <li>
-        <.link href={~p"/users/log_in"} class="">
-          Log in
-        </.link>
-      </li>
-    <% end %>
   </ul>
 </nav>
 <main class="mt-16">

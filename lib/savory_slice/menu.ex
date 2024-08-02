@@ -134,7 +134,6 @@ defmodule SavorySlice.Menu do
   """
   def list_categories_with_pizzas do
     Repo.all(Category) |> Repo.preload(:pizzas)
-  
   end
 
   @doc """
@@ -222,5 +221,34 @@ defmodule SavorySlice.Menu do
 
   def list_categories_by_id(category_ids) do
     Repo.all(from c in Category, where: c.id in ^category_ids)
+  end
+
+  def get_item_price!(pizza_id, size, crust) do
+    pizza = get_pizza!(pizza_id)
+    calculate_price(pizza, size, crust)
+  end
+
+  defp calculate_price(pizza, size, crust) do
+    base_price =
+      case size do
+        :regular -> pizza.price
+        :medium -> pizza.medium_price
+        :large -> pizza.large_price
+        "regular" -> pizza.price
+        "medium" -> pizza.medium_price
+        "large" -> pizza.large_price
+      end
+
+    crust_price =
+      case crust do
+        :free -> Decimal.new("0.0")
+        :pan -> Decimal.new("0.6")
+        :cheese -> Decimal.new("1.0")
+        "free" -> Decimal.new("0.0")
+        "pan" -> Decimal.new("0.6")
+        "cheese" -> Decimal.new("1.0")
+      end
+
+    Decimal.add(base_price, crust_price)
   end
 end

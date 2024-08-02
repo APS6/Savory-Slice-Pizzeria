@@ -2,6 +2,17 @@ defmodule BasketSidebar do
   use SavorySliceWeb, :live_component
 
   def render(assigns) do
+    sub_total =
+      if assigns.basket do
+        Enum.reduce(assigns.basket.items, Decimal.new(0), fn item, acc ->
+          Decimal.add(acc, Decimal.mult(item["price_when_carted"], item["quantity"]))
+        end)
+      else
+        Decimal.new(0)
+      end
+
+    total = Decimal.add(sub_total, Decimal.new(2))
+
     ~H"""
     <div class=" hidden md:block fixed top-[61px] w-[320px] bottom-0 right-0 bg-white border-l border-l-black">
       <div class="pt-4 pb-2 h-full flex flex-col justify-between items-center">
@@ -53,10 +64,99 @@ defmodule BasketSidebar do
             <% end %>
           </div>
         </div>
-        <button class="bg-tomato text-white text-lg py-2 px-8 w-3/4 rounded-lg">
-          Checkout - 69$
-        </button>
+        <%= if assigns.basket && length(assigns.basket.items) !== 0 do %>
+          <div class="w-full flex flex-col items-center border-t border-t-gray-500 pt-2">
+            <div class="w-full px-2">
+              <div class="w-full flex justify-between items-center">
+                <span>Subtotal</span> <span><%= sub_total %>$</span>
+              </div>
+              <div class="w-full flex justify-between items-center">
+                <span>Delivery</span> <span>2$</span>
+              </div>
+              <div class="w-full flex justify-between items-center font-bold mt-1">
+                <span>Grand Total</span> <span><%= total %>$</span>
+              </div>
+            </div>
+            <button
+              phx-click="show_address_dialog"
+              class="bg-tomato text-white text-lg mt-4 py-2 px-8 w-3/4 rounded-lg flex justify-center"
+            >
+              Checkout
+            </button>
+          </div>
+        <% else %>
+          <button disabled class="bg-tomato text-white text-lg py-2 px-8 w-3/4 rounded-lg">
+            Checkout
+          </button>
+        <% end %>
       </div>
+      <%= if @show_address_dialog do %>
+        <div class="fixed top-[61px] right-0 bottom-0 flex flex-col w-[400px] bg-white  border-l border-l-black">
+          <div class="flex justify-between items-center py-2 px-4 border-b border-b-black">
+            <h2 class="text-2xl font-semibold">Add Address</h2>
+            <div phx-click="hide_address_dialog" class="p-1 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+                <path
+                  fill="currentColor"
+                  d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div class="px-2 h-full">
+            <.simple_form
+              class="h-full pt-4"
+              inner_class="h-full flex flex-col justify-between"
+              for={@address_form}
+              id="address_form"
+            >
+              <div class="flex flex-col gap-3">
+                <.input
+                  field={@address_form["name"]}
+                  name="name"
+                  type="text"
+                  value=""
+                  label="Name"
+                  required
+                />
+                <.input
+                  field={@address_form["mobile"]}
+                  name="mobile"
+                  type="text"
+                  value=""
+                  label="Mobile"
+                  required
+                />
+                <.input
+                  field={@address_form["address"]}
+                  name="address"
+                  type="text"
+                  value=""
+                  label="Address Line 1"
+                  required
+                />
+                <.input
+                  field={@address_form["address_2"]}
+                  name="address line 2"
+                  type="text"
+                  value=""
+                  label="Address Line 2"
+                  required
+                />
+              </div>
+
+              <div>
+                <.button
+                  phx-disable-with="Loading..."
+                  class=" bg-tomato text-white text-lg mt-4 mb-4 mx-auto py-2 px-8 w-3/4 rounded-lg flex justify-center "
+                >
+                  Continue to Payment
+                </.button>
+              </div>
+            </.simple_form>
+          </div>
+        </div>
+      <% end %>
     </div>
     """
   end

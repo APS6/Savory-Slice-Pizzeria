@@ -65,7 +65,13 @@
       <% end %>
     </div>
   </div>
-  <.live_component module={BasketSidebar} id="basket" basket={@basket} />
+  <.live_component
+    module={BasketSidebar}
+    id="basket"
+    basket={@basket}
+    address_form={@address_form}
+    show_address_dialog={@show_address_dialog}
+  />
 </div>
 
 <%= if @modal_pizza do %>
