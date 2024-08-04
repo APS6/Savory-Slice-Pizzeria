@@ -6,8 +6,7 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :savory_slice, SavorySliceWeb.Endpoint,
-  cache_static_manifest: "priv/static/cache_manifest.json",
-  force_ssl: [rewrite_on: [:x_forwarded_proto]]
+  cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: SavorySlice.Finch
@@ -17,6 +16,20 @@ config :swoosh, local: false
 
 # Do not print debug messages in production
 config :logger, level: :info
+
+config :savory_slice, SavorySliceWeb.Endpoint,
+  # Possibly not needed, but doesn't hurt
+  http: [port: {:system, "PORT"}],
+  url: [host: System.get_env("APP_NAME") <> ".gigalixirapp.com", port: 443],
+  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
+  server: true
+
+config :savory_slice, SavorySlice.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: System.get_env("DATABASE_URL"),
+  ssl: true,
+  # Free tier db only allows 4 connections. Rolling deploys need pool_size*(n+1) connections where n is the number of app replicas.
+  pool_size: 2
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
