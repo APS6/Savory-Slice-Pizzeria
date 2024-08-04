@@ -6,13 +6,13 @@ defmodule SavorySliceWeb.PizzaController do
 
   def index(conn, _params) do
     pizzas = Menu.list_pizzas()
-    render(conn, :index, pizzas: pizzas)
+    render(conn, :index, pizzas: pizzas, page_title: "Admin")
   end
 
   def new(conn, _params) do
     changeset = Menu.change_pizza(%Pizza{})
     categories = category_opts(changeset)
-    render(conn, :new, changeset: changeset, categories: categories)
+    render(conn, :new, changeset: changeset, categories: categories, page_title: "Admin")
   end
 
   def create(conn, %{"pizza" => pizza_params}) do
@@ -29,14 +29,20 @@ defmodule SavorySliceWeb.PizzaController do
 
   def show(conn, %{"id" => id}) do
     pizza = Menu.get_pizza!(id)
-    render(conn, :show, pizza: pizza)
+    render(conn, :show, pizza: pizza, page_title: "Admin")
   end
 
   def edit(conn, %{"id" => id}) do
     pizza = Menu.get_pizza!(id)
     changeset = Menu.change_pizza(pizza)
     categories = category_opts(changeset)
-    render(conn, :edit, pizza: pizza, changeset: changeset, categories: categories)
+
+    render(conn, :edit,
+      pizza: pizza,
+      changeset: changeset,
+      categories: categories,
+      page_title: "Admin"
+    )
   end
 
   def update(conn, %{"id" => id, "pizza" => pizza_params}) do
@@ -62,7 +68,7 @@ defmodule SavorySliceWeb.PizzaController do
     |> redirect(to: ~p"/admin/pizzas")
   end
 
- def createCategory(conn, %{"category" => category_params}) do
+  def createCategory(conn, %{"category" => category_params}) do
     case Menu.create_category(category_params) do
       {:ok, category} ->
         conn

@@ -23,7 +23,8 @@ defmodule SavorySliceWeb.BasketLive do
        sub_total: sub_total,
        total: total,
        show_address_dialog: false,
-       address_form: nil
+       address_form: nil,
+       page_title: "Basket"
      )}
   end
 
