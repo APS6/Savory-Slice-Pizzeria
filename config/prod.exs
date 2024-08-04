@@ -13,13 +13,6 @@ config :savory_slice, SavorySliceWeb.Endpoint,
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
   server: true
 
-config :savory_slice, SavorySlice.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  url: System.get_env("DATABASE_URL"),
-  ssl: true,
-  # Fr
-  pool_size: 2
-
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: SavorySlice.Finch
 
