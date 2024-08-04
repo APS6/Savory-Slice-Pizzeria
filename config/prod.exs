@@ -10,6 +10,7 @@ config :savory_slice, SavorySliceWeb.Endpoint,
   # Possibly not needed, but doesn't hurt
   http: [port: {:system, "PORT"}],
   url: [host: "pizza.anirudha.pro", port: 443],
+  check_origin: ["https://pizza.anirudha.pro", "https://savory-slice.gigalixirapp.com"],
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
   server: true
 
