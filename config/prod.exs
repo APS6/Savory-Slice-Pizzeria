@@ -7,7 +7,18 @@ import Config
 # before starting your production server.
 config :savory_slice, SavorySliceWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
+  # Possibly not needed, but doesn't hurt
+  http: [port: {:system, "PORT"}],
+  url: [host: System.get_env("APP_NAME") <> ".gigalixirapp.com", port: 443],
+  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
   server: true
+
+config :savory_slice, SavorySlice.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: System.get_env("DATABASE_URL"),
+  ssl: true,
+  # Fr
+  pool_size: 2
 
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: SavorySlice.Finch
