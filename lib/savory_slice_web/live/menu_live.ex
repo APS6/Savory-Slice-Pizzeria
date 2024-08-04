@@ -155,7 +155,7 @@ defmodule SavorySliceWeb.MenuLive do
     ~H"""
     <.link
       class="md:hidden my-4 mr-4 font-medium bg-zinc-900 text-zinc-100 px-4 py-1 rounded hover:bg-zinc-800 hover:text-zinc-200"
-      navigate={~p"/basket"}
+      href={~p"/basket"}
     >
       View
     </.link>
